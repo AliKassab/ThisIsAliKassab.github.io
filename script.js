@@ -56,17 +56,23 @@ sections.forEach(section => {
 // ===== INTERSECTION OBSERVER FOR PROJECT CARDS =====
 const projectCards = document.querySelectorAll('.project-card');
 
+// Store card index as data attribute for proper stagger timing
+projectCards.forEach((card, index) => {
+    card.setAttribute('data-card-index', index);
+});
+
 const cardObserverOptions = {
     threshold: 0.15,
     rootMargin: '0px'
 };
 
 const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
         if (entry.isIntersecting) {
+            const cardIndex = parseInt(entry.target.getAttribute('data-card-index'), 10);
             setTimeout(() => {
                 entry.target.classList.add('visible');
-            }, index * 100);
+            }, cardIndex * 100);
         }
     });
 }, cardObserverOptions);
